@@ -26,6 +26,14 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
+TEMPLATE_DIRS = (
+  os.path.join(SETTINGS_PATH, '../adashboard/templates'),
+)
+
+STATICFILES_DIRS = (
+  os.path.join(BASE_DIR, "static"),
+)
 
 # Application definition
 
@@ -80,6 +88,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+# https://docs.djangoproject.com/en/1.6/howto/adash.static-files/
 
 STATIC_URL = '/static/'
