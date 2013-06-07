@@ -2,3 +2,7 @@
 *.pot
 *.pyc
 local_settings.py
+.idea/*
+adash/.idea/*
+api-dashboard.iml
+adash/adash.iml
