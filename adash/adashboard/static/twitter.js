@@ -5,44 +5,24 @@
       $.ajax({
         url: '/favorites.json'
       }).success(function(data) {
-        var myDiv = $('<div>');
-        var ajaxSelf = this;
-        ajaxSelf.finish = function() {
-          $('<script src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>').appendTo(parentDiv);
-        };
-        ajaxSelf.previous = null;
         _.each(data, function(tweet) {
-          if (ajaxSelf.previous) {
-            var previous = ajaxSelf.previous;
-            ajaxSelf.previous = function() {
-              self.renderIndividualTweet(myDiv, tweet.id, previous);
-            }
-          } else {
-            ajaxSelf.previous = function() {
-              self.renderIndividualTweet(myDiv, tweet.id, ajaxSelf.finish);
-            }
-          }
+          var myDiv = $('<div class="tweet">');
+          self.renderIndividualTweet(myDiv, tweet);
+          myDiv.appendTo(parentDiv);
         });
-        if (ajaxSelf.previous) {
-          ajaxSelf.previous();
-        }
-        myDiv.prependTo(parentDiv);
+        $('<script src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>').appendTo(parentDiv);
       });
     },
 
-    renderIndividualTweet: function(parentDiv, tweet, callback) {
-      $.ajax({
-        url: 'https://api.twitter.com/1/statuses/oembed.json?omit_script=true&id=' + tweet,
-        crossDomain: true,
-        dataType: 'jsonp'
-      }).success(function(data) {
-        var tweet_div = $('<div>').html(data.html);
-        tweet_div.attr('height', '100px').data('conversation', 'none');  // THIS DOES NOTHING?!
-        tweet_div.prependTo(parentDiv);
-        if(callback) {
-          callback();
-        }
-      });
+    renderIndividualTweet: function(parentDiv, tweet) {
+      var text = $('<div class="tweet-text">').append(tweet.text);
+      var userImg = $('<img>').attr('src', tweet.userProfileImageUrl);
+      var user = $('<a>').attr('href', 'http://twitter.com/' + tweet.userScreenName).append(userImg);
+      var userDiv = $('<div class="tweet-user-pic">').append(user);
+      var userName = $('<div class="tweet-username">').append(tweet.userName);
+      text.appendTo(parentDiv);
+      userDiv.appendTo(parentDiv);
+      userName.appendTo(parentDiv);
     }
   }
 })();

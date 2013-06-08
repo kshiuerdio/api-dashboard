@@ -1,0 +1,30 @@
+.tweet {
+    min-height: 45px;
+    font-family: "Helvetica Neue",Arial,sans-serif;
+    border: 1px solid lightgrey;
+    padding: 7px;
+    border-radius: 5px;
+    margin: 5px;
+    width: 700px;
+    position: relative;
+}
+
+.tweet-text {
+    top: 7px;
+    left: 7px;
+    width: 495px;
+    position: absolute;
+}
+
+.tweet-user-pic {
+    top: 7px;
+    left: 498px;
+    position: absolute;
+}
+
+.tweet-username {
+    top: 7px;
+    left: 553px;
+    width: 150px;
+    position: absolute;
+}
