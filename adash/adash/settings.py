@@ -33,7 +33,17 @@ TEMPLATE_DIRS = (
 
 STATICFILES_DIRS = (
   os.path.join(BASE_DIR, "static"),
+  os.path.join(BASE_DIR, "adashboard/static"),
 )
+
+DATA_SOURCE_KEYS = {
+  'twitter' : {
+    'consumer_key' : os.environ.get('TWITTER_CONSUMER_KEY', None),
+    'consumer_secret' : os.environ.get('TWITTER_CONSUMER_SECRET', None),
+    'access_key' : os.environ.get('TWITTER_ACCESS_KEY', None),
+    'access_secret' : os.environ.get('TWITTER_ACCESS_SECRET', None)
+  }
+}
 
 # Application definition
 

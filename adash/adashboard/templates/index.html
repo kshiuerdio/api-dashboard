@@ -1,14 +1,15 @@
 <html>
   <head>
-    <script type="text/javascript" src="/static/jquery-2.0.2.min.js"></script>
-    <script type="text/javascript" src="/static/backbone-min.js"></script>
-    <script type="text/javascript" src="/static/underscore-min.js"></script>
+    <script src="/static/jquery-2.0.2.min.js"></script>
+    <script src="/static/underscore-min.js"></script>
+    <script src="/static/backbone-min.js"></script>
+    <script src="/static/twitter.js" charset="utf-8"></script>
   </head>
   <body>
-    TEST
-    <div class="test"></div>
-    <script>
-      $('.test').html('boo');
-    </script>
+    <div id="favorites">
+      <script>
+        Renderer.allFavorites($("#favorites"))
+      </script>
+    </div>
   </body>
 </html>
