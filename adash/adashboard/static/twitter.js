@@ -10,7 +10,6 @@
           self.renderIndividualTweet(myDiv, tweet);
           myDiv.appendTo(parentDiv);
         });
-        $('<script src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>').appendTo(parentDiv);
       });
     },
 

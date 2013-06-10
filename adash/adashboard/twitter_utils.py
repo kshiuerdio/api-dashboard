@@ -1,5 +1,6 @@
 import twitter
-from adashboard.models import Tweet
+from datetime import datetime, timedelta
+from adashboard.models import Configuration, Tweet
 from adash.settings import DATA_SOURCE_KEYS
 
 
@@ -15,12 +16,18 @@ def get_api():
   return api
 
 def get_favorites():
-  # TODO
   # if last updated was recent, don't get favorites
   # otherwise, get them.  return whatever we have from the database.
-  api = get_api()
-  user = api.GetUser(screen_name='rdioapi')
-  return api.GetFavorites(user_id=user.id)
+  twitter_last_updated = Configuration.objects.filter(name='twitter_last_updated')
+  if twitter_last_updated and twitter_last_updated[0].updated.replace(tzinfo=None) > (datetime.now() - timedelta(minutes=10)):
+    favorites = Tweet.objects.order_by('id', '-created')
+  else:
+    api = get_api()
+    user = api.GetUser(screen_name='rdioapi')
+    favorites = update_favorites(api.GetFavorites(user_id=user.id))
+    config = Configuration(name='twitter_last_updated')
+    config.save()
+  return [ tweet_obj.to_hash() for tweet_obj in favorites ]
 
 def status_to_hash(status):
   return { 'id' : "%s" % status.id,
@@ -32,10 +39,9 @@ def status_to_hash(status):
            'userProfileImageUrl' : status.user.profile_image_url }
 
 def update_favorites(statuses):
-  for status in statuses:
-    try:
-      tweet = Tweet.objects.get(status_id=status['id'])
-      tweet.favorite_count = status['favoriteCount']
-      tweet.save()
-    except Tweet.DoesNotExist:
-      Tweet.create(status)
+  results = []
+  for status in reversed(statuses):
+    # We're almost always delivered the set of favorites from twitter in reversed order, most recent to least recent,
+    # So deal with it that way.
+    results.append(Tweet.create_or_update(status))
+  return results
